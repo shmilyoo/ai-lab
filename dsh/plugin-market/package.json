@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Generates and validates the registry that feeds the self-hosted DSH plugin market.",
   "scripts": {
-    "build": "node scripts/build-registry.mjs",
-    "validate": "node scripts/validate.mjs"
+    "build": "node scripts/build-index.mjs",
+    "validate": "node scripts/validate.mjs",
+    "site": "node scripts/build-site.mjs"
   }
 }

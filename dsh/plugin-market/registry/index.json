@@ -1,0 +1,125 @@
+{
+  "format": 1,
+  "title": {
+    "en": "ai-lab Plugin Market",
+    "zh": "ai-lab 插件市场"
+  },
+  "description": {
+    "en": "Personal DeepSeek Harness plugins maintained in shmilyoo/ai-lab.",
+    "zh": "维护在 shmilyoo/ai-lab 中的个人 DeepSeek Harness 插件。"
+  },
+  "metadata": {
+    "categories": {
+      "ui": {
+        "title": {
+          "en": "Interface",
+          "zh": "界面"
+        }
+      },
+      "tool": {
+        "title": {
+          "en": "Tools",
+          "zh": "工具"
+        }
+      },
+      "workflow": {
+        "title": {
+          "en": "Workflow",
+          "zh": "工作流"
+        }
+      },
+      "integration": {
+        "title": {
+          "en": "Integration",
+          "zh": "集成"
+        }
+      },
+      "theme": {
+        "title": {
+          "en": "Theme",
+          "zh": "主题"
+        }
+      },
+      "other": {
+        "title": {
+          "en": "Other",
+          "zh": "其他"
+        }
+      }
+    },
+    "labels": {
+      "sidebar-panel": {
+        "title": {
+          "en": "Sidebar panel",
+          "zh": "侧栏面板"
+        }
+      },
+      "client-slot": {
+        "title": {
+          "en": "Client slot",
+          "zh": "客户端插槽"
+        }
+      }
+    },
+    "sortKeys": {
+      "added": {
+        "title": {
+          "en": "Added",
+          "zh": "添加时间"
+        },
+        "order": "desc"
+      }
+    }
+  },
+  "plugins": [
+    {
+      "name": "@shmilyoo/dsh-menu-example",
+      "title": {
+        "en": "Test menu",
+        "zh": "测试菜单"
+      },
+      "description": {
+        "en": "Adds a Test menu row to the left sidebar; opening it shows a test line in the main panel.",
+        "zh": "在左侧栏新增「测试菜单」入口，点开后主栏面板显示一句测试文案。"
+      },
+      "icon": "https://raw.githubusercontent.com/shmilyoo/ai-lab/ea7b4888cc7fde360b50ed5c600a3b3c67225e38/dsh/plugins/menu-example/assets/icon.svg",
+      "author": "shmilyoo",
+      "homepage": "https://github.com/shmilyoo/ai-lab/tree/main/dsh/plugins/menu-example",
+      "repository": {
+        "url": "https://github.com/shmilyoo/ai-lab",
+        "directory": "dsh/plugins/menu-example"
+      },
+      "metadata": {
+        "category": "ui",
+        "keywords": [
+          "dsh-plugin",
+          "deepseek-harness",
+          "sidebar-panel",
+          "client-slot"
+        ],
+        "labels": [
+          "sidebar-panel",
+          "client-slot"
+        ],
+        "sortKeys": {
+          "added": 1794700800
+        }
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1794827098,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/shmilyoo/ai-lab",
+            "commit": "ea7b4888cc7fde360b50ed5c600a3b3c67225e38",
+            "path": "dsh/plugins/menu-example"
+          },
+          "engines": {
+            "dsh": ">=0.2.2-rc.1 <0.3.0"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -30,7 +30,7 @@ jobs:
       - name: 校验
         run: |
           node scripts/build-catalog.mjs
-          node dsh/plugin-market/scripts/build-registry.mjs
+          node dsh/plugin-market/scripts/build-index.mjs
           node dsh/plugin-market/scripts/validate.mjs
       - name: 发布插件包
         run: |

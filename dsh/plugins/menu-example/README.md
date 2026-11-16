@@ -21,10 +21,16 @@ pnpm --filter @shmilyoo/dsh-menu-example build
 然后在 DSH 的 **Plugins** 页用「添加插件」选中本目录，或用 `plugin_manager` 的 `install_bundle` 指向
 本目录的绝对路径。装上后新开一个会话即可在左侧栏看到入口。
 
-发布到 npm 之后也可以直接装：
+市场索引发布后，可在 DSH 的 **插件 → 发现 → 索引源** 添加：
+
+```text
+https://shmilyoo.github.io/ai-lab/index.json
+```
+
+也可以直接按固定 Git commit 安装：
 
 ```bash
-dsh plugin add @shmilyoo/dsh-menu-example@0.1.0
+dsh plugin add git+https://github.com/shmilyoo/ai-lab.git#<commit>&path:/dsh/plugins/menu-example
 ```
 
 ## 目录结构

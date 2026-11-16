@@ -10,9 +10,10 @@
   "packageManager": "pnpm@11.8.0",
   "scripts": {
     "catalog": "node scripts/build-catalog.mjs",
-    "registry": "node dsh/plugin-market/scripts/build-registry.mjs",
+    "registry": "node dsh/plugin-market/scripts/build-index.mjs",
     "validate": "node dsh/plugin-market/scripts/validate.mjs",
-    "check": "npm run catalog && npm run registry && npm run validate",
+    "site": "node dsh/plugin-market/scripts/build-site.mjs",
+    "check": "npm run catalog && npm run registry && npm run validate && npm run site",
     "link:skills": "node scripts/link-skills.mjs link",
     "skills:status": "node scripts/link-skills.mjs status",
     "skills:unlink": "node scripts/link-skills.mjs unlink"

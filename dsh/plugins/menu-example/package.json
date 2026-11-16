@@ -11,6 +11,12 @@
   ],
   "license": "MIT",
   "icon": "assets/icon.svg",
+  "homepage": "https://github.com/shmilyoo/ai-lab/tree/main/dsh/plugins/menu-example",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shmilyoo/ai-lab.git",
+    "directory": "dsh/plugins/menu-example"
+  },
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
@@ -35,7 +41,8 @@
     "prepack": "node scripts/build.mjs"
   },
   "engines": {
-    "node": "^22.19.0 || >=24.0.0"
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.2-rc.1 <0.3.0"
   },
   "dsh": {
     "bundle": {

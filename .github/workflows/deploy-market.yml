@@ -27,16 +27,13 @@ jobs:
           node-version: 22
       - name: 生成并校验 registry
         run: |
-          node dsh/plugin-market/scripts/build-registry.mjs
+          node dsh/plugin-market/scripts/build-index.mjs
           node dsh/plugin-market/scripts/validate.mjs
       - name: 组装站点
-        run: |
-          mkdir -p _site
-          cp -R dsh/plugin-market/site/. _site/
-          cp dsh/plugin-market/registry/plugins.json _site/plugins.json
+        run: node dsh/plugin-market/scripts/build-site.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dsh/plugin-market/site/dist
 
   deploy:
     needs: build

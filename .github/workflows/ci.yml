@@ -21,6 +21,8 @@ jobs:
       - name: 生成资产索引
         run: node scripts/build-catalog.mjs
       - name: 生成市场 registry
-        run: node dsh/plugin-market/scripts/build-registry.mjs
+        run: node dsh/plugin-market/scripts/build-index.mjs
       - name: 校验一致性
         run: node dsh/plugin-market/scripts/validate.mjs
+      - name: 构建市场站点
+        run: node dsh/plugin-market/scripts/build-site.mjs

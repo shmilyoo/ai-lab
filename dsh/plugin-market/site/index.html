@@ -1,144 +1,342 @@
 <!doctype html>
-<!-- 文件职责：市场静态页，读取同目录的 plugins.json 并渲染插件列表。
-     关系：plugins.json 由 CI 从 ../registry/plugins.json 复制而来，因此本页不关心仓库结构。
-     约定：不引入构建工具与外部依赖，保证 GitHub Pages 直接可用；
-     数据加载失败时展示可直接照做的排查提示，而不是空白页。 -->
+<!--
+  文件职责：DSH 插件市场静态展示页，读取同目录的 format-1 index.json。
+  关系：由 scripts/build-site.mjs 与 registry/index.json 一起组装到 site/dist。
+  约定：不引入构建工具和第三方前端依赖，确保 GitHub Pages 可直接托管；页面只做展示，
+        插件安装和索引添加仍在 DSH 内完成。
+-->
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
     <title>ai-lab · DSH 插件市场</title>
     <style>
       :root {
-        color-scheme: light dark;
-        --bg: #0f1115;
-        --panel: #171a21;
-        --border: #2a2f3a;
-        --text: #e6e9ef;
-        --muted: #9aa4b2;
-        --accent: #6ea8fe;
+        --bg: #f5f7fb;
+        --surface: rgba(255, 255, 255, 0.88);
+        --surface-strong: #fff;
+        --text: #172033;
+        --muted: #626d80;
+        --border: rgba(23, 32, 51, 0.12);
+        --accent: #2f67d8;
+        --accent-soft: #e8efff;
+        --shadow: 0 20px 60px rgba(39, 58, 91, 0.12);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0d1118;
+          --surface: rgba(24, 30, 41, 0.88);
+          --surface-strong: #181e29;
+          --text: #eef2f9;
+          --muted: #9ca8ba;
+          --border: rgba(238, 242, 249, 0.12);
+          --accent: #79a4ff;
+          --accent-soft: rgba(93, 139, 255, 0.15);
+          --shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+        }
       }
       * { box-sizing: border-box; }
       body {
-        margin: 0;
         min-height: 100vh;
-        background: radial-gradient(1200px 600px at 20% -10%, #1b2333, var(--bg));
+        margin: 0;
         color: var(--text);
-        font: 15px/1.6 system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+        background:
+          radial-gradient(900px 520px at 15% -10%, var(--accent-soft), transparent 70%),
+          radial-gradient(800px 500px at 100% 0%, rgba(121, 164, 255, 0.12), transparent 65%),
+          var(--bg);
+        font: 15px/1.65 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
       }
-      main { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
-      header h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: 0.3px; }
-      header p { margin: 0; color: var(--muted); }
-      .empty {
-        margin-top: 32px;
-        padding: 24px;
-        border: 1px dashed var(--border);
-        border-radius: 12px;
-        color: var(--muted);
-      }
-      .card {
-        margin-top: 16px;
-        padding: 20px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 14px;
+      main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 40px 0 72px; }
+      .hero {
         display: grid;
-        grid-template-columns: 48px 1fr;
-        gap: 16px;
-      }
-      .card img { width: 48px; height: 48px; border-radius: 10px; background: #0b0d12; object-fit: contain; }
-      .card h2 { margin: 0; font-size: 17px; }
-      .card h2 span { color: var(--muted); font-size: 13px; font-weight: 400; margin-left: 8px; }
-      .card p { margin: 6px 0 12px; color: var(--muted); }
-      .card code {
-        display: inline-block;
-        padding: 6px 10px;
-        background: #0b0d12;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 28px;
+        align-items: end;
+        padding: 34px;
         border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--accent);
-        font-size: 13px;
+        border-radius: 24px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
       }
-      .card a { color: var(--muted); font-size: 13px; margin-left: 12px; }
-      @media (prefers-color-scheme: light) {
-        :root { --bg: #f6f7fb; --panel: #ffffff; --border: #e2e5ec; --text: #1a1d24; --muted: #5b6472; }
-        body { background: radial-gradient(1200px 600px at 20% -10%, #e8eefc, var(--bg)); }
+      .eyebrow { margin: 0 0 10px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(30px, 5vw, 54px); line-height: 1.05; letter-spacing: -.04em; }
+      .hero-copy { max-width: 720px; margin: 16px 0 0; color: var(--muted); }
+      .index-box { min-width: 330px; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface-strong); }
+      .index-label { margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .index-url { display: block; overflow: hidden; color: var(--text); font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-overflow: ellipsis; white-space: nowrap; }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+      button, .button {
+        min-height: 38px;
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        background: var(--surface-strong);
+        font: inherit;
+        font-weight: 650;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      button:hover, .button:hover { border-color: var(--accent); color: var(--accent); }
+      button.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+      button.primary:hover { opacity: .88; color: #fff; }
+      .toolbar { display: flex; gap: 12px; align-items: center; margin: 30px 0 18px; flex-wrap: wrap; }
+      .search {
+        flex: 1 1 280px;
+        min-width: 220px;
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        background: var(--surface-strong);
+        font: inherit;
+        outline: none;
+      }
+      .search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+      .filter { min-height: 34px; padding: 6px 12px; border-radius: 999px; font-size: 13px; }
+      .filter[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+      .summary { color: var(--muted); font-size: 13px; }
+      #list { display: grid; gap: 14px; }
+      .card {
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 18px;
+        padding: 22px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: 0 10px 35px rgba(39, 58, 91, 0.06);
+      }
+      .icon { width: 58px; height: 58px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-strong); object-fit: contain; }
+      .card-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+      .card h2 { margin: 0; font-size: 19px; letter-spacing: -.02em; }
+      .version { color: var(--muted); font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .package { margin: 3px 0 0; color: var(--muted); font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .description { margin: 11px 0 14px; color: var(--muted); }
+      .labels { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+      .pill { padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 650; }
+      .install { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+      .command { flex: 1 1 420px; overflow-x: auto; margin: 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-strong); color: var(--text); font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+      .meta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 13px; color: var(--muted); font-size: 12px; }
+      .empty { padding: 36px; border: 1px dashed var(--border); border-radius: 18px; color: var(--muted); background: var(--surface); }
+      .error { border-color: rgba(210, 72, 72, .45); color: #c63d3d; }
+      .toast { position: fixed; right: 18px; bottom: 18px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-strong); box-shadow: var(--shadow); opacity: 0; transform: translateY(8px); transition: .2s ease; pointer-events: none; }
+      .toast.show { opacity: 1; transform: translateY(0); }
+      footer { margin-top: 34px; color: var(--muted); font-size: 12px; }
+      @media (max-width: 760px) {
+        .hero { grid-template-columns: 1fr; padding: 24px; }
+        .index-box { min-width: 0; }
+        .card { grid-template-columns: 46px minmax(0, 1fr); padding: 18px; }
+        .icon { width: 46px; height: 46px; }
       }
     </style>
   </head>
   <body>
     <main>
-      <header>
-        <h1>ai-lab · DSH 插件市场</h1>
-        <p>个人 DeepSeek Harness 插件。数据来自仓库内 <code>dsh/plugins</code>，由 CI 生成，不手写。</p>
-      </header>
-      <section id="list" aria-live="polite">
-        <div class="empty">正在加载 plugins.json…</div>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">DeepSeek Harness · format 1</p>
+          <h1 id="title">ai-lab 插件市场</h1>
+          <p class="hero-copy" id="description">正在读取插件索引…</p>
+        </div>
+        <div class="index-box">
+          <p class="index-label">DSH 索引地址</p>
+          <code class="index-url" id="index-url"></code>
+          <div class="actions">
+            <button class="primary" type="button" id="copy-index">复制索引地址</button>
+            <a class="button" id="repo-link" href="https://github.com/shmilyoo/ai-lab" target="_blank" rel="noopener">查看仓库</a>
+          </div>
+        </div>
       </section>
+
+      <section class="toolbar" aria-label="插件筛选">
+        <input class="search" id="search" type="search" placeholder="搜索插件、关键词…" autocomplete="off" />
+        <div class="filters" id="filters"></div>
+        <span class="summary" id="summary">正在加载…</span>
+      </section>
+      <section id="list" aria-live="polite">
+        <div class="empty">正在加载 index.json…</div>
+      </section>
+      <footer>
+        在 DSH 中打开「插件 → 发现 → 索引源」，添加上方地址即可浏览并安装。索引中的插件会以当前用户权限运行，只添加你信任的来源。
+      </footer>
     </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
-      const CATEGORY_LABEL = {
-        ui: "界面",
-        tool: "工具",
-        workflow: "工作流",
-        integration: "集成",
-        theme: "主题",
-        other: "其他",
+      const INDEX_URL = new URL("./index.json", location.href).href;
+      const state = { index: null, query: "", category: "all" };
+      const elements = {
+        title: document.getElementById("title"),
+        description: document.getElementById("description"),
+        indexUrl: document.getElementById("index-url"),
+        copyIndex: document.getElementById("copy-index"),
+        repoLink: document.getElementById("repo-link"),
+        search: document.getElementById("search"),
+        filters: document.getElementById("filters"),
+        summary: document.getElementById("summary"),
+        list: document.getElementById("list"),
+        toast: document.getElementById("toast"),
       };
+
+      function localized(value, language = navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en") {
+        if (typeof value === "string") return value;
+        return value?.[language] || value?.zh || value?.en || "";
+      }
+
+      function installCommand(plugin, version) {
+        if (version.source.type === "npm") return `dsh plugin add ${plugin.name}@${version.version}`;
+        const repository = version.source.url.endsWith(".git") ? version.source.url : `${version.source.url}.git`;
+        const path = version.source.path ? `&path:/${version.source.path}` : "";
+        return `dsh plugin add git+${repository}#${version.source.commit}${path}`;
+      }
+
+      async function copyText(text, message) {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          textarea.remove();
+        }
+        elements.toast.textContent = message;
+        elements.toast.classList.add("show");
+        clearTimeout(copyText.timer);
+        copyText.timer = setTimeout(() => elements.toast.classList.remove("show"), 1800);
+      }
 
       function el(tag, className, text) {
         const node = document.createElement(tag);
         if (className) node.className = className;
-        if (text) node.textContent = text;
+        if (text !== undefined) node.textContent = text;
         return node;
       }
 
+      function categoryTitle(id) {
+        return localized(state.index.metadata.categories[id]?.title) || id;
+      }
+
+      function matches(plugin) {
+        if (state.category !== "all" && plugin.metadata.category !== state.category) return false;
+        const query = state.query.trim().toLowerCase();
+        if (!query) return true;
+        const haystack = [
+          plugin.name,
+          localized(plugin.title),
+          localized(plugin.description),
+          ...(plugin.metadata.keywords || []),
+          ...(plugin.metadata.labels || []).map((label) => localized(state.index.metadata.labels[label]?.title) || label),
+        ].join("\n").toLowerCase();
+        return query.split(/\s+/).every((word) => haystack.includes(word));
+      }
+
+      function renderFilters() {
+        const categories = Object.keys(state.index.metadata.categories);
+        const counts = new Map(categories.map((category) => [category, state.index.plugins.filter((plugin) => plugin.metadata.category === category).length]));
+        const choices = [["all", `全部 ${state.index.plugins.length}`], ...categories.map((category) => [category, `${categoryTitle(category)} ${counts.get(category)}`])];
+        elements.filters.replaceChildren(...choices.map(([id, label]) => {
+          const button = el("button", "filter", label);
+          button.type = "button";
+          button.setAttribute("aria-pressed", String(state.category === id));
+          button.addEventListener("click", () => {
+            state.category = id;
+            renderFilters();
+            render();
+          });
+          return button;
+        }));
+      }
+
       function renderCard(plugin) {
+        const version = plugin.versions[0];
         const card = el("article", "card");
-        const icon = el("img");
-        icon.src = plugin.icon;
+        const icon = el("img", "icon");
+        icon.src = plugin.icon || "";
         icon.alt = "";
         icon.loading = "lazy";
         icon.addEventListener("error", () => { icon.style.visibility = "hidden"; });
 
         const body = el("div");
-        const title = el("h2", null, plugin.name);
-        title.appendChild(el("span", null, `v${plugin.version} · ${CATEGORY_LABEL[plugin.category] || plugin.category}`));
-        body.appendChild(title);
-        body.appendChild(el("p", null, plugin.description.zh || plugin.description.en || ""));
+        const head = el("div", "card-head");
+        const heading = el("div");
+        heading.append(el("h2", null, localized(plugin.title) || plugin.name), el("p", "package", plugin.name));
+        head.append(heading, el("span", "version", `v${version.version}`));
+        body.append(head, el("p", "description", localized(plugin.description)));
 
-        const install = el("code", null, plugin.install);
-        body.appendChild(install);
+        const labels = el("div", "labels");
+        labels.append(el("span", "pill", categoryTitle(plugin.metadata.category) || "其他"));
+        for (const label of plugin.metadata.labels || []) {
+          labels.append(el("span", "pill", localized(state.index.metadata.labels[label]?.title) || label));
+        }
+        body.append(labels);
 
-        const link = el("a", null, "源码");
-        link.href = plugin.url;
+        const commandText = installCommand(plugin, version);
+        const install = el("div", "install");
+        install.append(el("pre", "command", commandText));
+        const copy = el("button", "primary", "复制安装命令");
+        copy.type = "button";
+        copy.addEventListener("click", () => copyText(commandText, `已复制 ${plugin.name} 安装命令`));
+        install.append(copy);
+        body.append(install);
+
+        const meta = el("div", "meta");
+        const link = el("a", null, "源码与详情");
+        link.href = plugin.homepage || plugin.repository.url;
+        link.target = "_blank";
         link.rel = "noopener";
-        body.appendChild(link);
+        meta.append(link);
+        if (plugin.author) meta.append(el("span", null, `作者 ${plugin.author}`));
+        const added = plugin.metadata.sortKeys?.added;
+        if (Number.isFinite(added)) meta.append(el("span", null, `收录 ${new Date(added * 1000).toLocaleDateString()}`));
+        body.append(meta);
 
         card.append(icon, body);
         return card;
       }
 
-      async function load() {
-        const list = document.getElementById("list");
-        let data;
-        try {
-          const response = await fetch("./plugins.json", { cache: "no-store" });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          data = await response.json();
-        } catch (error) {
-          list.replaceChildren(
-            el("div", "empty", `读取 plugins.json 失败：${error.message}。请确认站点目录里有 plugins.json，并通过 HTTP 打开页面（直接双击 file:// 会被浏览器拦截）。`)
-          );
+      function render() {
+        const visible = state.index.plugins.filter(matches);
+        elements.summary.textContent = `${visible.length} / ${state.index.plugins.length} 个插件`;
+        if (!visible.length) {
+          elements.list.replaceChildren(el("div", "empty", "没有匹配的插件。"));
           return;
         }
+        elements.list.replaceChildren(...visible.map(renderCard));
+      }
 
-        if (!data.plugins || data.plugins.length === 0) {
-          list.replaceChildren(el("div", "empty", "市场里还没有插件。在 dsh/plugins/ 下新增插件包后，重新生成 registry 并部署。"));
-          return;
+      async function load() {
+        elements.indexUrl.textContent = INDEX_URL;
+        elements.indexUrl.title = INDEX_URL;
+        elements.copyIndex.addEventListener("click", () => copyText(INDEX_URL, "已复制索引地址"));
+        try {
+          const response = await fetch("./index.json", { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const index = await response.json();
+          if (index.format !== 1 || !Array.isArray(index.plugins)) throw new Error("不是 format-1 索引");
+          state.index = index;
+          elements.title.textContent = localized(index.title) || "ai-lab 插件市场";
+          elements.description.textContent = localized(index.description) || "";
+          const firstRepository = index.plugins.find((plugin) => plugin.repository?.url)?.repository.url;
+          if (firstRepository) elements.repoLink.href = firstRepository;
+          elements.search.addEventListener("input", () => {
+            state.query = elements.search.value;
+            render();
+          });
+          renderFilters();
+          render();
+        } catch (error) {
+          elements.summary.textContent = "加载失败";
+          elements.list.replaceChildren(el("div", "empty error", `读取 index.json 失败：${error.message}。请通过 HTTP 打开站点，并确认部署产物包含 index.json。`));
         }
-        list.replaceChildren(...data.plugins.map(renderCard));
       }
 
       load();

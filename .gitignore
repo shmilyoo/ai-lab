@@ -8,6 +8,5 @@ node_modules/
 .env.*
 !.env.example
 
-# 市场站点产物（由 CI 从 registry 复制）
-dsh/plugin-market/site/plugins.json
+# 市场站点产物（由 scripts/build-site.mjs 生成）
 dsh/plugin-market/site/dist/

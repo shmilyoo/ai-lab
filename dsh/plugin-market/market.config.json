@@ -1,11 +1,84 @@
 {
-  "name": "ai-lab market",
+  "name": {
+    "en": "ai-lab Plugin Market",
+    "zh": "ai-lab 插件市场"
+  },
+  "description": {
+    "en": "Personal DeepSeek Harness plugins maintained in shmilyoo/ai-lab.",
+    "zh": "维护在 shmilyoo/ai-lab 中的个人 DeepSeek Harness 插件。"
+  },
   "owner": "shmilyoo",
+  "author": "shmilyoo",
   "repo": "shmilyoo/ai-lab",
   "repoUrl": "https://github.com/shmilyoo/ai-lab",
   "branch": "main",
   "pluginsDir": "dsh/plugins",
-  "iconBaseUrl": "https://raw.githubusercontent.com/shmilyoo/ai-lab/main",
+  "rawContentBaseUrl": "https://raw.githubusercontent.com/shmilyoo/ai-lab",
   "siteBaseUrl": "https://shmilyoo.github.io/ai-lab",
-  "categories": ["ui", "tool", "workflow", "integration", "theme", "other"]
+  "source": {
+    "type": "git"
+  },
+  "metadata": {
+    "categories": {
+      "ui": {
+        "title": {
+          "en": "Interface",
+          "zh": "界面"
+        }
+      },
+      "tool": {
+        "title": {
+          "en": "Tools",
+          "zh": "工具"
+        }
+      },
+      "workflow": {
+        "title": {
+          "en": "Workflow",
+          "zh": "工作流"
+        }
+      },
+      "integration": {
+        "title": {
+          "en": "Integration",
+          "zh": "集成"
+        }
+      },
+      "theme": {
+        "title": {
+          "en": "Theme",
+          "zh": "主题"
+        }
+      },
+      "other": {
+        "title": {
+          "en": "Other",
+          "zh": "其他"
+        }
+      }
+    },
+    "labels": {
+      "sidebar-panel": {
+        "title": {
+          "en": "Sidebar panel",
+          "zh": "侧栏面板"
+        }
+      },
+      "client-slot": {
+        "title": {
+          "en": "Client slot",
+          "zh": "客户端插槽"
+        }
+      }
+    },
+    "sortKeys": {
+      "added": {
+        "title": {
+          "en": "Added",
+          "zh": "添加时间"
+        },
+        "order": "desc"
+      }
+    }
+  }
 }
