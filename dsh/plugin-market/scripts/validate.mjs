@@ -67,7 +67,7 @@ function validateDeclarations(metadata) {
   }
 }
 
-function validateSource(source, path, pluginPath, expectedCommit) {
+function validateSource(source, path, pluginPath, expectedVersion) {
   if (!source || typeof source !== 'object') {
     err(`${path} 必须是对象`);
     return;
@@ -84,21 +84,40 @@ function validateSource(source, path, pluginPath, expectedCommit) {
   if (!COMMIT.test(source.commit || '')) err(`${path}.commit 必须是 40 位小写 commit SHA`);
   if (source.path !== pluginPath) err(`${path}.path 必须是 ${pluginPath}`);
   if (CONFIG.source.type !== 'git') err(`${path}.type 与 market.config.json 的 git 来源不一致`);
-  if (source.commit !== expectedCommit) err(`${path}.source.commit 与当前 HEAD 不一致，重跑 pnpm registry`);
+
+  let manifestText;
+  try {
+    manifestText = execFileSync('git', ['show', `${source.commit}:${pluginPath}/package.json`], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    err(`${path}.source.commit ${source.commit} 中不存在 ${pluginPath}/package.json`);
+    return;
+  }
+  try {
+    const sourcePackage = JSON.parse(manifestText);
+    if (sourcePackage.version !== expectedVersion) {
+      err(`${path}.source.commit 中 package.json 版本 ${sourcePackage.version} 与索引 ${expectedVersion} 不一致`);
+    }
+  } catch (error) {
+    err(`${path}.source.commit 中 package.json 无法解析：${error.message}`);
+  }
 }
 
-function validateVersion(version, path, pluginPath, expectedCommit) {
+function validateVersion(version, path, pluginPath) {
   if (!SEMVER.test(version && version.version)) err(`${path}.version 不是精确 SemVer`);
   if (!Number.isInteger(version.publishTimestamp) || version.publishTimestamp < 0) {
     err(`${path}.publishTimestamp 必须是非负整数秒`);
   }
-  validateSource(version.source, `${path}.source`, pluginPath, expectedCommit);
+  validateSource(version.source, `${path}.source`, pluginPath, version.version);
   if (version.engines && version.engines.dsh && typeof version.engines.dsh !== 'string') {
     err(`${path}.engines.dsh 必须是字符串`);
   }
 }
 
-function validateIndex(index, expectedCommit) {
+function validateIndex(index) {
   if (index.format !== 1) err('$.format 必须是 1');
   validateLocalized(index.title, '$.title', true);
   if (index.description !== undefined) validateLocalized(index.description, '$.description');
@@ -151,7 +170,7 @@ function validateIndex(index, expectedCommit) {
     plugin.versions.forEach((version, versionPosition) => {
       if (versions.has(version.version)) err(`${path}.versions[${versionPosition}].version 重复`);
       versions.add(version.version);
-      validateVersion(version, `${path}.versions[${versionPosition}]`, plugin.repository.directory, expectedCommit);
+      validateVersion(version, `${path}.versions[${versionPosition}]`, plugin.repository.directory);
     });
   });
 }
@@ -215,9 +234,7 @@ function main() {
     process.exit(1);
   }
 
-  const expectedCommit = process.env.MARKET_SOURCE_COMMIT || process.env.GITHUB_SHA
-    || execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
-  validateIndex(index, expectedCommit);
+  validateIndex(index);
 
   const packages = listPluginPackages();
   const entries = new Map((index.plugins || []).map((plugin) => [plugin.name, plugin]));
