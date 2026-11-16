@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Test menu",
+    "description": "Adds a Test menu row to the left sidebar. Selecting it shows a test line in the main panel; the row and its panel share one id, so the menu keeps working while the plugin stays enabled.",
+    "detail": "docs/DETAIL.md"
+  }
+}

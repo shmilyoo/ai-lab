@@ -1,0 +1,81 @@
+{
+  "name": "@shmilyoo/dsh-menu-example",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Adds a Test menu entry to the DSH left sidebar; selecting it shows a test line in the main panel.",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "sidebar-panel",
+    "client-slot"
+  ],
+  "license": "MIT",
+  "icon": "assets/icon.svg",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./assets/icon.svg",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "locale",
+    "assets",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm run typecheck && pnpm run build",
+    "prepack": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    },
+    "market": {
+      "summary": {
+        "en": "Adds a Test menu row to the left sidebar; opening it shows a test line in the main panel.",
+        "zh": "在左侧栏新增「测试菜单」入口，点开后主栏面板显示一句测试文案。"
+      },
+      "category": "ui",
+      "capabilities": [
+        "sidebar-panel",
+        "client-slot"
+      ],
+      "icon": "assets/icon.svg",
+      "added": "2026-11-15"
+    }
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "~4.1.0",
+    "@deepseek-ai/dsh-client-locale": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-client-store": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-client-ui-layout": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-client-ui-sidebar": "0.2.2-rc.3",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.2-rc.3",
+    "@types/react": "~18.3.18",
+    "esbuild": "^0.28.2",
+    "react": "~18.3.1",
+    "typescript": "^5.9.3"
+  }
+}

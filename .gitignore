@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+*.log
+*.tgz
+
+# 本地环境与密钥
+.env
+.env.*
+!.env.example
+
+# 市场站点产物（由 CI 从 registry 复制）
+dsh/plugin-market/site/plugins.json
+dsh/plugin-market/site/dist/

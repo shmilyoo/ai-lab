@@ -1,0 +1,7 @@
+# 本 bundle 的 Loader 补丁：把插件记录插进 profile 的层栈。
+# 关系：package.json 的 dsh.bundle.patch 指向本文件；DSH 的 Plugin Manager 安装时读取它。
+# 约定：id 用来在 profile 的 patch 层里定位这条记录（改配置、禁用都按 id 定位），不要随版本改。
+# 注意：这是 Host 半部分的一条空记录——界面能力由 package.json 的 dsh.client 声明，跟随本记录一起加载。
+- insert:
+    - id: menu-example
+      name: '@shmilyoo/dsh-menu-example'

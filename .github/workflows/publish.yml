@@ -1,0 +1,39 @@
+name: publish
+
+# 手动发布插件包。需要仓库 secret：NPM_TOKEN。
+# 首次发布前先在本地跑 pnpm run check，并确认版本号已用 changesets 提升。
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 只演练，不真正发布
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+      - name: 校验
+        run: |
+          node scripts/build-catalog.mjs
+          node dsh/plugin-market/scripts/build-registry.mjs
+          node dsh/plugin-market/scripts/validate.mjs
+      - name: 发布插件包
+        run: |
+          pnpm -r --filter "./dsh/plugins/**" publish --access public --no-git-checks ${{ inputs.dry_run && '--dry-run' || '' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

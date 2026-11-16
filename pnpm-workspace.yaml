@@ -1,0 +1,8 @@
+# 只有可发布 / 可安装的包进 workspace。
+# skills/、agents/、learning/ 是内容目录，不装依赖，也不参与 workspace。
+packages:
+  - "dsh/plugins/*"
+  - "dsh/plugin-market"
+# esbuild 的安装脚本只负责落平台二进制，允许它执行（`dsh/plugins/*` 的构建依赖它）。
+allowBuilds:
+  esbuild: true

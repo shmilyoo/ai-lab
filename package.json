@@ -1,0 +1,20 @@
+{
+  "name": "ai-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal AI laboratory: agent skills, DeepSeek Harness plugins, a self-hosted plugin market, and learning notes.",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.8.0",
+  "scripts": {
+    "catalog": "node scripts/build-catalog.mjs",
+    "registry": "node dsh/plugin-market/scripts/build-registry.mjs",
+    "validate": "node dsh/plugin-market/scripts/validate.mjs",
+    "check": "npm run catalog && npm run registry && npm run validate",
+    "link:skills": "node scripts/link-skills.mjs link",
+    "skills:status": "node scripts/link-skills.mjs status",
+    "skills:unlink": "node scripts/link-skills.mjs unlink"
+  }
+}

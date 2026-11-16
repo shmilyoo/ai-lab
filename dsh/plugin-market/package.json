@@ -1,0 +1,11 @@
+{
+  "name": "ai-lab-plugin-market",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generates and validates the registry that feeds the self-hosted DSH plugin market.",
+  "scripts": {
+    "build": "node scripts/build-registry.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}

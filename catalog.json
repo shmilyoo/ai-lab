@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-11-15T04:27:16.189Z",
+  "skills": [],
+  "plugins": [
+    {
+      "name": "@shmilyoo/dsh-menu-example",
+      "version": "0.1.0",
+      "description": "在左侧栏新增「测试菜单」入口，点开后主栏面板显示一句测试文案。",
+      "category": "ui",
+      "path": "dsh/plugins/menu-example"
+    }
+  ],
+  "agents": [],
+  "counts": {
+    "skills": 0,
+    "plugins": 1,
+    "agents": 0
+  }
+}

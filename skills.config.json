@@ -1,0 +1,4 @@
+{
+  "targets": ["~/.cc-switch/skills"],
+  "notes": "本机 agent 读取的 skills 目录。仓库 skills/<name> 会被链接到这里的同名路径；编辑任一侧都是同一份文件。新增目标时确认该目录确实是某个 agent 的 skill 根，避免同一 skill 被多处重复加载。"
+}

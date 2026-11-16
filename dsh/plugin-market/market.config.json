@@ -1,0 +1,11 @@
+{
+  "name": "ai-lab market",
+  "owner": "shmilyoo",
+  "repo": "shmilyoo/ai-lab",
+  "repoUrl": "https://github.com/shmilyoo/ai-lab",
+  "branch": "main",
+  "pluginsDir": "dsh/plugins",
+  "iconBaseUrl": "https://raw.githubusercontent.com/shmilyoo/ai-lab/main",
+  "siteBaseUrl": "https://shmilyoo.github.io/ai-lab",
+  "categories": ["ui", "tool", "workflow", "integration", "theme", "other"]
+}

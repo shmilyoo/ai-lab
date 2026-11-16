@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300">
+  <rect width="640" height="300" rx="20" fill="#f3f5f9"/>
+  <!-- 左侧栏 -->
+  <rect x="48" y="40" width="176" height="220" rx="14" fill="#e7edf5"/>
+  <rect x="64" y="56" width="144" height="10" rx="5" fill="#d6dde7"/>
+  <rect x="64" y="80" width="96" height="8" rx="4" fill="#e0e5ed"/>
+  <rect x="64" y="104" width="112" height="8" rx="4" fill="#e0e5ed"/>
+  <!-- 被选中的菜单行 -->
+  <rect x="56" y="144" width="160" height="32" rx="8" fill="#ffffff" stroke="#b7c3d2" stroke-width="2"/>
+  <circle cx="74" cy="160" r="5" fill="#7CB7FF"/>
+  <rect x="86" y="156" width="64" height="8" rx="4" fill="#679EFE"/>
+  <rect x="64" y="192" width="112" height="8" rx="4" fill="#e0e5ed"/>
+  <rect x="64" y="216" width="88" height="8" rx="4" fill="#e0e5ed"/>
+  <!-- 主栏面板 -->
+  <rect x="248" y="40" width="344" height="220" rx="16" fill="#ffffff" stroke="#d6dde7" stroke-width="2"/>
+  <rect x="280" y="80" width="120" height="12" rx="6" fill="#b7c3d2"/>
+  <rect x="280" y="108" width="232" height="9" rx="4.5" fill="#d6dde7"/>
+  <rect x="280" y="146" width="200" height="9" rx="4.5" fill="#e0e5ed"/>
+  <rect x="280" y="164" width="248" height="9" rx="4.5" fill="#e0e5ed"/>
+</svg>
