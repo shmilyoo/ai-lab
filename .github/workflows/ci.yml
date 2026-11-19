@@ -16,8 +16,6 @@ jobs:
           node-version: 22
       - name: 安装依赖
         run: pnpm install --frozen-lockfile
-      - name: 生成资产索引
-        run: node scripts/build-catalog.mjs
       - name: 生成市场 registry
         run: node dsh/plugin-market/scripts/build-index.mjs
       - name: 校验一致性

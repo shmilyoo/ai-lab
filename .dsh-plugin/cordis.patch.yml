@@ -1,0 +1,4 @@
+# DeepSeek Harness bundle entry. The package-level dsh.bundle.patch points here.
+- insert:
+    - id: yy-skills
+      name: "ai-lab/.dsh-plugin/index.mjs"

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 文件职责：把仓库 skills/<name> 用符号链接挂到本机 agent 的 skills 目录，让仓库文件成为唯一事实源；
 // 本机对 skill 的任何编辑都会通过链接直接写回仓库，因此不需要"双向同步"这一步。
-// 关系：目标目录由 skills.config.json 的 targets 指定；与 scripts/build-catalog.mjs 共用 skills/ 目录约定。
+// 关系：目标目录由 skills.config.json 的 targets 指定，仓库 skills/ 是唯一事实源。
 // 约定：只创建、替换、删除符号链接，绝不删除真实目录；遇到既有真实目录一律跳过并提示用 adopt 收编。
 // 为什么不用硬链接：目录无法硬链接（APFS/Linux 都拒绝），而文件硬链接会被 git 的替换式写入
 // 和编辑器的「临时文件 + rename」保存打断；符号链接是路径别名，能保证两边始终是同一份文件。
@@ -315,7 +315,7 @@ function commandAdopt(name, targets, options) {
   createLink(repoPath, localPath, false);
 
   console.log(`已收编 ${name}：文件现在位于 skills/${name}，${localPath} 是指向它的链接。`);
-  console.log(`下一步：node scripts/build-catalog.mjs，然后按需 git add skills/${name}`);
+  console.log(`下一步：按需 git add skills/${name}`);
 }
 
 function main() {

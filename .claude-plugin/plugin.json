@@ -1,0 +1,21 @@
+{
+  "$schema": "https://code.claude.com/schemas/plugin.json",
+  "name": "yy-skills",
+  "displayName": "YY Skills",
+  "version": "0.1.0",
+  "description": "Reusable agent skills maintained in the ai-lab repository.",
+  "skills": "./skills/",
+  "author": {
+    "name": "shmilyoo",
+    "url": "https://github.com/shmilyoo"
+  },
+  "homepage": "https://github.com/shmilyoo/ai-lab",
+  "repository": "https://github.com/shmilyoo/ai-lab",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "deepseek-harness"
+  ]
+}

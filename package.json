@@ -1,21 +1,31 @@
 {
   "name": "ai-lab",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Personal AI laboratory: agent skills, DeepSeek Harness plugins, a self-hosted plugin market, and learning notes.",
   "engines": {
-    "node": ">=22"
+    "node": ">=22",
+    "dsh": ">=0.2.2-rc.1 <0.3.0"
   },
   "packageManager": "pnpm@11.8.0",
   "scripts": {
-    "catalog": "node scripts/build-catalog.mjs",
     "registry": "node dsh/plugin-market/scripts/build-index.mjs",
     "validate": "node dsh/plugin-market/scripts/validate.mjs",
     "site": "node dsh/plugin-market/scripts/build-site.mjs",
-    "check": "npm run catalog && npm run registry && npm run validate && npm run site",
+    "check": "npm run check:manifests && npm run registry && npm run validate && npm run site",
     "link:skills": "node scripts/link-skills.mjs link",
     "skills:status": "node scripts/link-skills.mjs status",
-    "skills:unlink": "node scripts/link-skills.mjs unlink"
+    "skills:unlink": "node scripts/link-skills.mjs unlink",
+    "check:manifests": "node scripts/check-manifests.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shmilyoo/ai-lab.git"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./.dsh-plugin/cordis.patch.yml"
+    }
   }
 }

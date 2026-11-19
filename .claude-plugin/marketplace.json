@@ -1,0 +1,34 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "ai-lab",
+  "owner": {
+    "name": "shmilyoo",
+    "url": "https://github.com/shmilyoo"
+  },
+  "metadata": {
+    "description": "YY reusable skills for Claude Code, Codex, and DeepSeek Harness."
+  },
+  "plugins": [
+    {
+      "name": "yy-skills",
+      "displayName": "YY Skills",
+      "source": "./",
+      "description": "Reusable agent skills maintained in the ai-lab repository.",
+      "version": "0.1.0",
+      "author": {
+        "name": "shmilyoo",
+        "url": "https://github.com/shmilyoo"
+      },
+      "homepage": "https://github.com/shmilyoo/ai-lab",
+      "repository": "https://github.com/shmilyoo/ai-lab",
+      "license": "MIT",
+      "category": "Productivity",
+      "keywords": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "deepseek-harness"
+      ]
+    }
+  ]
+}

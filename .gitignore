@@ -11,3 +11,8 @@ node_modules/
 # 市场站点产物（由 scripts/build-site.mjs 生成）
 dsh/plugin-market/site/dist/
 .git-keeper
+# Firecrawl 本地抓取结果
+.firecrawl/
+
+# pnpm 失败安装时可能留下的本地 store
+.pnpm-store

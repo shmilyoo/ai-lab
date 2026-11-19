@@ -17,7 +17,7 @@ https://shmilyoo.github.io/ai-lab/index.json
 pnpm registry   # 生成 registry/index.json
 pnpm validate   # 校验索引、插件包与安装来源
 pnpm site       # 生成 site/dist
-pnpm check      # 依次执行 catalog、索引、校验和站点构建
+pnpm check      # 依次执行索引、校验和站点构建
 ```
 
 本地预览：
