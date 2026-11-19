@@ -10,3 +10,4 @@ node_modules/
 
 # 市场站点产物（由 scripts/build-site.mjs 生成）
 dsh/plugin-market/site/dist/
+.git-keeper
