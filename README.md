@@ -41,11 +41,13 @@ DeepSeek Harness。
 三个客户端都直接使用同一个 GitHub 仓库作为来源。更新仓库并重新运行对应
 客户端的更新或安装命令后，重启目标客户端即可。
 
+可使用仓库内的 `update-ai-lab` skill 自动更新；DSH 会更新所有已安装 `ai-lab` 的 profile。
+
 该仓库不会生成或保存第二份 skill 副本，`skills/` 始终是唯一事实源。
 
 ## 版本
 
-当前插件版本是 `0.1.0`，由以下三个文件共同定义：
+当前插件版本是 `0.2.0`，由以下三个文件共同定义：
 
 - `package.json`
 - `.claude-plugin/plugin.json`

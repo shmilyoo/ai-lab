@@ -1,0 +1,3 @@
+interface:
+  display_name: "Update AI Lab"
+  short_description: "Update installed ai-lab skills across selected agents"
