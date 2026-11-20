@@ -2,7 +2,7 @@
   "$schema": "https://code.claude.com/schemas/plugin.json",
   "name": "yy-skills",
   "displayName": "YY Skills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Reusable agent skills maintained in the ai-lab repository.",
   "skills": "./skills/",
   "author": {
