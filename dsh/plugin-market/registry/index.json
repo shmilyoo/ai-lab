@@ -82,7 +82,7 @@
         "en": "Adds a Test menu row to the left sidebar; opening it shows a test line in the main panel.",
         "zh": "在左侧栏新增「测试菜单」入口，点开后主栏面板显示一句测试文案。"
       },
-      "icon": "https://raw.githubusercontent.com/shmilyoo/ai-lab/4cde367daa63637b7b0c4da4b40e6289ee118665/dsh/plugins/menu-example/assets/icon.svg",
+      "icon": "https://raw.githubusercontent.com/shmilyoo/ai-lab/83bb7339ef53c886ca06b2a7255271e09b6ba199/dsh/plugins/menu-example/assets/icon.svg",
       "author": "shmilyoo",
       "homepage": "https://github.com/shmilyoo/ai-lab/tree/main/dsh/plugins/menu-example",
       "repository": {
@@ -108,11 +108,11 @@
       "versions": [
         {
           "version": "0.1.0",
-          "publishTimestamp": 1795108249,
+          "publishTimestamp": 1795145785,
           "source": {
             "type": "git",
             "url": "https://github.com/shmilyoo/ai-lab",
-            "commit": "4cde367daa63637b7b0c4da4b40e6289ee118665",
+            "commit": "83bb7339ef53c886ca06b2a7255271e09b6ba199",
             "path": "dsh/plugins/menu-example"
           },
           "engines": {
