@@ -1,0 +1,4 @@
+interface:
+  display_name: "Specs Writer"
+  short_description: "Turn agreed requirements into executable agent specs"
+  default_prompt: "Use $specs-writer to turn the agreed requirement into execution-ready design, plan, and progress specifications."

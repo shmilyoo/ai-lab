@@ -1,0 +1,42 @@
+{
+  "parallel_section": "## 任务执行与并行策略",
+  "schedule_table_heading": "### 调度编排分析表",
+  "task_statuses": ["TODO", "RUNNING", "CODE_DONE", "AUTO_VERIFIED", "GATE_VERIFIED", "BLOCKED"],
+  "task_terminal_statuses": ["AUTO_VERIFIED", "GATE_VERIFIED"],
+  "gate_statuses": ["TODO", "RUNNING", "PASSED", "FAILED", "BLOCKED"],
+  "required_parallel_fields": ["编排目标", "执行能力", "主代理边界", "Worker 输入", "Worker 回传", "日志边界", "禁止回传", "契约冻结", "契约产物", "Gate 策略"],
+  "schedule_headers": ["Task", "范围", "产出/消费者", "硬依赖", "契约", "独占资源"],
+  "required_task_sections": ["目标", "约束", "内容", "验证", "交接"],
+  "required_task_constraint_fields": ["必读", "写入范围", "禁止修改"],
+  "required_integration_gate_fields": ["执行者", "依赖", "新增覆盖", "验证命令", "证据"],
+  "required_final_gate_fields": ["执行者", "依赖", "收口范围", "最终命令", "证据"],
+  "required_manual_gate_fields": ["执行者", "依赖"],
+  "worker_input_required": ["Task 卡", "调度表", "design", "依赖 progress", "源码入口"],
+  "worker_return_required": ["状态", "产出契约", "改动文件", "验证结论", "证据路径", "下游可依赖", "下游不可假设", "风险"],
+  "worker_log_required": ["完整日志", "证据文件", "主 Agent", "摘要"],
+  "worker_forbidden_required": ["完整源码", "完整对话", "完整日志", "完整 diff"],
+  "task_progress_required_fields": ["产出契约", "改动文件", "验证命令", "验证结果", "证据摘要", "下游可依赖", "下游不可假设", "风险或阻塞"],
+  "gate_progress_required_fields": ["执行者", "新增覆盖", "命令", "结果", "证据", "结论", "主 Agent 确认"],
+  "manual_gate_progress_required_fields": ["执行者", "人工验收范围", "人工验收结果", "证据", "结论", "人工决定"],
+  "review_required_fields": ["评审者", "风险级别", "Reviewer 结论", "主 Agent 处理", "用户决定", "复验"],
+  "reviewer_conclusions": ["PASS", "CHANGES_REQUIRED", "BLOCKED"],
+  "user_decisions": ["确认", "保持当前方案", "输入意见"],
+  "review_skip_markers": ["- 方案review：用户跳过", "- 方案review：未触发独立评审（低风险自查）"],
+  "multi_task_execution_marker": "每个 Task 使用独立 Worker/上下文",
+  "multi_task_boundary_marker": "仅编排、派发和验收；主 Agent 不实现 Task",
+  "task_status_definitions": {
+    "TODO": "尚未开始",
+    "RUNNING": "执行中",
+    "CODE_DONE": "实现完成且产出契约已记录，可解锁只依赖该契约的下游；验证尚未完成",
+    "AUTO_VERIFIED": "Task 局部验证通过，且 progress 中有命令、结果和证据",
+    "GATE_VERIFIED": "Task 验证由已 PASSED 的指定 Gate 完成，且有 progress 证据",
+    "BLOCKED": "存在明确外部阻塞"
+  },
+  "gate_status_definitions": {
+    "TODO": "尚未开始",
+    "RUNNING": "验证中",
+    "PASSED": "验证通过并形成可交接结论",
+    "FAILED": "验证失败，需要修复后重跑",
+    "BLOCKED": "存在明确外部阻塞"
+  }
+}

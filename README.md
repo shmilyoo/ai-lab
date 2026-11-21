@@ -47,7 +47,7 @@ DeepSeek Harness。
 
 ## 版本
 
-当前插件版本是 `0.4.0`，由以下三个文件共同定义：
+当前插件版本是 `0.5.0`，由以下三个文件共同定义：
 
 - `package.json`
 - `.claude-plugin/plugin.json`
